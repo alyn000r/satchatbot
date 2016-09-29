@@ -109,3 +109,27 @@ app.delete("/satflashcard/:id", function(req, res) {
         }
     });
 });
+
+app.get("/satflashcard/question/:id", function(req, res) {
+    db.collection(SAT_FLASHCARDS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get sat flash card");
+        } else {
+            var question = {};
+            question.question = doc.question;
+            res.status(200).json(question);
+        }
+    });
+});
+
+app.get("/satflashcard/answer/:id", function(req, res) {
+    db.collection(SAT_FLASHCARDS_COLLECTION).findOne({ _id: new ObjectID(req.params.id) }, function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to get sat flash card");
+        } else {
+            var answer = {};
+            answer.answer = doc.answer;
+            res.status(200).json(answer);
+        }
+    });
+});
