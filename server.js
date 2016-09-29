@@ -54,6 +54,20 @@ app.get("/satflashcard", function(req, res) {
     });
 });
 
+app.get("/satflashcard/next/:index", function(req, res) {
+    var options = {};
+    options.limit = 3;
+    options.skip = parseInt(req.params.index);
+    
+    db.collection(SAT_FLASHCARDS_COLLECTION).find({},options).toArray(function(err, docs) {
+        if (err) {
+            handleError(res, err.message, "Failed to get flashcards.");
+        } else {
+            res.status(200).json(docs);
+        }
+    });
+});
+
 app.post("/satflashcard", function(req, res) {
     var newSatFlashCard = req.body;
     newSatFlashCard.createDate = new Date();
