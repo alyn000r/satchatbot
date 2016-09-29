@@ -1,0 +1,24 @@
+{
+  "name": "satchatbot",
+  "version": "1.0.0",
+  "description": "Sat Chatbot to help students",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "test": "test"
+  },
+  "dependencies": {
+    "ejs": "~1.0.0",
+    "express": "~4.9.8"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/alyn000r/satchatbot.git"
+  },
+  "author": "Ali Noor",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/alyn000r/satchatbot/issues"
+  },
+  "homepage": "https://github.com/alyn000r/satchatbot#readme"
+}
