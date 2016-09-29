@@ -116,7 +116,7 @@ app.get("/satflashcard/question/:id", function(req, res) {
             handleError(res, err.message, "Failed to get sat flash card");
         } else {
             var question = {};
-            question.question = doc.question;
+            question.text = doc.question;
             res.status(200).json(question);
         }
     });
@@ -128,7 +128,7 @@ app.get("/satflashcard/answer/:id", function(req, res) {
             handleError(res, err.message, "Failed to get sat flash card");
         } else {
             var answer = {};
-            answer.answer = doc.answer;
+            answer.text = doc.answer;
             res.status(200).json(answer);
         }
     });
