@@ -1,46 +1,46 @@
-angular.module("contactsApp", ['ngRoute'])
+angular.module("satFlashCardsApp", ['ngRoute'])
     .config(function($routeProvider) {
         $routeProvider
             .when("/", {
                 templateUrl: "list.html",
                 controller: "ListController",
                 resolve: {
-                    contacts: function(Contacts) {
-                        return Contacts.getContacts();
+                    flashcards: function(Flashcards) {
+                        return Flashcards.getFlashCards();
                     }
                 }
             })
-            .when("/new/contact", {
-                controller: "NewContactController",
-                templateUrl: "contact-form.html"
+            .when("/new/flashcard", {
+                controller: "NewFlashCardController",
+                templateUrl: "create-flashcard-form.html"
             })
-            .when("/contact/:contactId", {
-                controller: "EditContactController",
-                templateUrl: "contact.html"
+            .when("/flashcard/:flashCardId", {
+                controller: "EditFlashCardController",
+                templateUrl: "edit-flash-card.html"
             })
             .otherwise({
                 redirectTo: "/"
             })
     })
-    .service("Contacts", function($http) {
-        this.getContacts = function() {
-            return $http.get("/contacts").
+    .service("Flashcards", function($http) {
+        this.getFlashCards = function() {
+            return $http.get("/satflashcard").
                 then(function(response) {
                     return response;
                 }, function(response) {
-                    alert("Error finding contacts.");
+                    alert("Error finding flash cards.");
                 });
         }
-        this.createContact = function(contact) {
-            return $http.post("/contacts", contact).
+        this.createFlashCards = function(flashcard) {
+            return $http.post("/satflashcard", flashcard).
                 then(function(response) {
                     return response;
                 }, function(response) {
-                    alert("Error creating contact.");
+                    alert("Error creating flash card.");
                 });
         }
-        this.getContact = function(contactId) {
-            var url = "/contacts/" + contactId;
+        this.getFlashCard = function(flashCardId) {
+            var url = "/satflashcard/" + flashCardId;
             return $http.get(url).
                 then(function(response) {
                     return response;
@@ -48,69 +48,65 @@ angular.module("contactsApp", ['ngRoute'])
                     alert("Error finding this contact.");
                 });
         }
-        this.editContact = function(contact) {
-            var url = "/contacts/" + contact._id;
-            console.log(contact._id);
-            return $http.put(url, contact).
+        this.editFlashCard = function(flashCard) {
+            var url = "/satflashcard/" + flashCard._id;
+            console.log(flashCard._id);
+            return $http.put(url, flashCard).
                 then(function(response) {
                     return response;
                 }, function(response) {
-                    alert("Error editing this contact.");
+                    alert("Error editing this flashCard.");
                     console.log(response);
                 });
         }
-        this.deleteContact = function(contactId) {
-            var url = "/contacts/" + contactId;
+        this.deleteFlashCard = function(flashCardId) {
+            var url = "/satflashcard/" + flashCardId;
             return $http.delete(url).
                 then(function(response) {
                     return response;
                 }, function(response) {
-                    alert("Error deleting this contact.");
+                    alert("Error deleting this flash card.");
                     console.log(response);
                 });
         }
     })
-    .controller("ListController", function(contacts, $scope) {
-        $scope.contacts = contacts.data;
+    .controller("ListController", function(flashcards, $scope, Flashcards, $route) {
+        $scope.flashcards = flashcards.data;
+
+        $scope.deleteFlashCard = function(flashCardId) {
+            Flashcards.deleteFlashCard(flashCardId).then(function(data){
+                $route.reload();
+            });
+        }
     })
-    .controller("NewContactController", function($scope, $location, Contacts) {
+    .controller("NewFlashCardController", function($scope, $location, Flashcards, $route) {
         $scope.back = function() {
             $location.path("#/");
         }
 
-        $scope.saveContact = function(contact) {
-            Contacts.createContact(contact).then(function(doc) {
-                var contactUrl = "/contact/" + doc.data._id;
-                $location.path(contactUrl);
+        $scope.saveFlashCard = function(flashCard) {
+            Flashcards.createFlashCards(flashCard).then(function(doc) {
+                $location.path("#/");
             }, function(response) {
                 alert(response);
             });
         }
     })
-    .controller("EditContactController", function($scope, $routeParams, Contacts) {
-        Contacts.getContact($routeParams.contactId).then(function(doc) {
-            $scope.contact = doc.data;
+    .controller("EditFlashCardController", function($scope, $routeParams, Flashcards) {
+        Flashcards.getFlashCard($routeParams.flashCardId).then(function(doc) {
+            $scope.flashcard = doc.data;
         }, function(response) {
             alert(response);
         });
 
         $scope.toggleEdit = function() {
             $scope.editMode = true;
-            $scope.contactFormUrl = "contact-form.html";
+            $scope.flashCardFormUrl = "edit-flash-card.html";
         }
 
-        $scope.back = function() {
+        $scope.saveFlashCard = function(flashCard) {
+            Flashcards.editFlashCard(flashCard);
             $scope.editMode = false;
-            $scope.contactFormUrl = "";
-        }
-
-        $scope.saveContact = function(contact) {
-            Contacts.editContact(contact);
-            $scope.editMode = false;
-            $scope.contactFormUrl = "";
-        }
-
-        $scope.deleteContact = function(contactId) {
-            Contacts.deleteContact(contactId);
+            $scope.flashCardFormUrl = "";
         }
     });

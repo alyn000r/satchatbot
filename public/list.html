@@ -1,13 +1,13 @@
 <div class = "row">
   <div class="col-md-6">
     <h2>
-      Contacts
+      Available Flashcards
     </h2>
   </div>
   <div class="col-md-3">
   </div>
   <div class="col-md-2">
-    <a style="margin-top:20px" class="btn btn-default" href="#/new/contact">New</a>
+    <a style="margin-top:20px" class="btn btn-default" href="#/new/flashcard">New</a>
   </div>
   <div class="col-md-1">
   </div>
@@ -15,10 +15,18 @@
 <div class="container">
   <table class="table table-hover">
     <tbody>
-      <tr ng-repeat="contact in contacts | orderBy:'lastName'" style="cursor:pointer">
+      <tr ng-repeat="flashcard in flashcards | orderBy:'question'" style="cursor:pointer">
         <td>
-          <a ng-href="#/contact/{{contact._id}}">{{ contact.firstName }} {{ contact.lastName }}</a>
+          <span>{{flashcard._id}}</span>
         </td>
+        <td>
+          {{ flashcard.question }}
+        </td>
+        <td>
+          {{ flashcard.answer }}
+        </td>
+        <td><a ng-href="#/flashcard/{{flashcard._id}}">Edit</a></td>
+        <td><button class="btn btn-danger" ng-click="deleteFlashCard(flashcard._id);">X</button></td>
       </tr>
     </tbody>
   </table>

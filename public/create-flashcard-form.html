@@ -1,0 +1,25 @@
+<div class="row" ng-hide="flashcard._id">
+  <div class="col-md-6">
+      <h2>Create new flash card</h2>
+  </div>
+</div>
+<div class="container">
+  <div>
+    <p>
+      <label>Question (required)</label>
+      <input id="question" class="form-control" type="text" ng-model="flashcard.question" required>
+    </p>
+    <p>
+      <label>Answer (required)</label>
+      <input id="answer" class="form-control" type="text" ng-model="flashcard.answer" required>
+    </p>
+    <p>
+      <label>Hint (required)</label>
+      <input id="hint" class="form-control" type="text" ng-model="flashcard.hint" required>
+    </p>
+    <p>
+      <button style="margin-top:20px" class="btn btn-default" ng-click="saveFlashCard(flashcard)">Save</button>
+      <button style="margin-top:20px" class="btn btn-default" ng-click="back()">Back</button>
+    </p>
+  </div>
+</div>
