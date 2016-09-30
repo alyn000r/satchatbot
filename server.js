@@ -56,9 +56,9 @@ app.get("/satflashcard", function(req, res) {
 
 app.get("/satflashcard/next/:index", function(req, res) {
     var options = {};
-    options.limit = 3;
+    options.limit = 100;
     options.skip = parseInt(req.params.index);
-    
+
     db.collection(SAT_FLASHCARDS_COLLECTION).find({},options).toArray(function(err, docs) {
         if (err) {
             handleError(res, err.message, "Failed to get flashcards.");
@@ -81,6 +81,23 @@ app.post("/satflashcard", function(req, res) {
             handleError(res, err.message, "Failed to create new sat flash card.");
         } else {
             res.status(201).json(doc.ops[0]);
+        }
+    });
+});
+
+app.post("/satflashcard/bulk", function(req,res){
+    var newFlashCardArray = req.body;
+    var bulk = db.collection(SAT_FLASHCARDS_COLLECTION).initializeUnorderedBulkOp();
+    for(var i= 0, len=newFlashCardArray.length; i < len; i++) {
+        var json = newFlashCardArray[i];
+        json.createDate = new Date();
+        bulk.insert(json);
+    }
+    bulk.execute(function(err, doc) {
+        if (err) {
+            handleError(res, err.message, "Failed to upload batch.");
+        } else {
+            res.status(201).json(doc.ok);
         }
     });
 });
